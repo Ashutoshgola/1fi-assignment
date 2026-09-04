@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Product from '@/models/Product';
+import dbConnect from '../../../lib/mongodb';
+import Product from '../../../models/Product';
 
 export async function GET() {
   try {
@@ -8,6 +8,6 @@ export async function GET() {
     const products = await Product.find({});
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
