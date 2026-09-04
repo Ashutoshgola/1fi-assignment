@@ -1,36 +1,180 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Mutual Fund-Backed EMI E-Commerce Platform
 
-## Getting Started
+A full-stack e-commerce application built for the **1Fi SDE1 Assignment**. Users can browse smartphones, select variants and mutual-fund-backed EMI plans, and submit orders.
 
-First, run the development server:
+## Tech Stack
+
+* **Frontend:** Next.js, React, Tailwind CSS
+* **Backend:** Next.js API Route Handlers
+* **Database:** MongoDB Atlas
+* **ODM:** Mongoose
+* **Deployment:** Vercel
+
+## Features
+
+* Dynamic product data from MongoDB
+* 3+ products with multiple variants
+* Product-specific URLs
+* MRP, price and product images
+* Multiple EMI plans
+* EMI tenure, monthly amount, interest & cashback
+* EMI plan selection
+* Customer and mutual fund folio details
+* Persistent order storage
+
+## Database Schema
+
+### Product
+
+```text
+Product
+├── name
+├── slug
+├── tagline
+├── image
+└── variants[]
+    ├── storage
+    ├── price
+    ├── mrp
+    └── emiPlans[]
+        ├── months
+        ├── monthlyAmount
+        ├── interest
+        └── cashback
+```
+
+### Order
+
+```text
+Order
+├── fullName
+├── email
+├── phone
+├── mutualFundFolio
+├── productName
+├── storage
+├── months
+├── monthlyAmount
+├── interest
+└── cashback
+```
+
+## Setup
+
+```bash
+git clone <your-repository-url>
+cd 1fi-assignment
+npm install
+```
+
+Create `.env.local`:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+```
+
+Seed the database:
+
+```bash
+node seed.js
+```
+
+Run the application:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Get All Products
 
-## Learn More
+```http
+GET /api/products
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Get Product
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```http
+GET /api/products/[slug]
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Example:
 
-## Deploy on Vercel
+```http
+GET /api/products/iphone-17-pro
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Create Order
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```http
+POST /api/orders
+```
+
+Example:
+
+```json
+{
+  "fullName": "Ashutosh Gola",
+  "email": "ashutosh@example.com",
+  "phone": "9876543210",
+  "mutualFundFolio": "MF-9823412",
+  "productName": "iPhone 17 Pro",
+  "storage": "256GB",
+  "months": 48,
+  "monthlyAmount": 3385,
+  "interest": "10.5%",
+  "cashback": 3000
+}
+```
+
+Response:
+
+```json
+{
+  "success": true,
+  "orderId": "66da02e4e1a3b8d4c9e8a105"
+}
+```
+
+### Health Check
+
+```http
+GET /api/health
+```
+
+```json
+{
+  "status": "ok",
+  "database": "connected"
+}
+```
+
+## Project Structure
+
+```text
+app/
+├── api/
+│   ├── products/
+│   ├── orders/
+│   └── health/
+├── products/[slug]/
+└── page.jsx
+
+models/
+├── Product.js
+└── Order.js
+
+lib/
+└── mongodb.js
+
+seed.js
+README.md
+```
+
+## Links
+
+* **GitHub:** https://github.com/Ashutoshgola/1fi-assignment
+
