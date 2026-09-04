@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "EMI Backed by Mutual Funds",
+  title: "IPhone EMI Plans",
   description: "E-commerce platform for mutual fund-backed EMI plans",
 };
 
